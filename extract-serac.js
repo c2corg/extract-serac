@@ -1,4 +1,4 @@
-#! /bin/node
+#!/usr/bin/env node
 
 const fs = require('fs');
 const path = require('path');
@@ -309,7 +309,7 @@ async function main() {
         if (err) {
           throw err;
         }
-        console.log('Done');
+        console.log('Done - output saved to ' + path.normalize(fileOutput));
       })
     }
   );
