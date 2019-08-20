@@ -6,6 +6,9 @@ install:
   - npm i -g pkg
 script:
   - "pkg extract-serac.js"
+before_deploy:
+  - "ls ."
+  - "pwd"
 deploy:
   provider: releases
   api_key:
