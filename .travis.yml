@@ -1,0 +1,16 @@
+language: node_js
+install:
+- npm ci
+script:
+- "./node_modules/.bin/pkg extract-serac.js"
+deploy:
+  provider: releases
+  api_key:
+    secure: dKt+Jyq/vjbnVCqlNf+z4MqTk/aSDRNiOu03452v+qJWfzMTM27IfL2w8l61DKfSZMyyHZE8Z4uST1VD233BDl6mw5Fvrt3NrXrMJl1j85Jtfcy/ZcrQWJxMF5W5unibcHdXRdm7mkNMC5GhIC/XrNsqu+1PZD3Yzg8LDx6Uy2h9PfUgQI2JQ6Kw7zBI45osqiWBMmH2YV0z7s6w+QW5YD6DZDN5NlA21cXk8mOlm9lkzi6fbjcV9xI/rqW1U8CvGObd2leA0sqB1W+DNucvrIoOeCI9IBF4QmQDHf85OlTMfvy25pSgI9oHE+M515S+NrZLtacg/wN1mx8U6c8KSPhFXLKlenp1EZzkdpd6aBFSioKO36T+m0ffhNK/MrOBJLs3VSBIFeB4GXsFxf7ttMXWq+fR40A+ul98l1fXbvfxh0m5riWETmlNja697X4/llnIkCtgggV476aZBTJppg58rIesx4L7fWyuw3YSavEh9/BVHjIAiJQKh3kfdoharQbcU9f/UzJFCeLKJnvAG7FLC/j+Vf5/wJxxhhOtwvBL4FpLPf1z+BT3ZLagI40dNg72E0532eLmcSEnYERkOHLnjcfUdDJdu3o/rpQm3s43dyfxj4rj6ni3K4FfC+oLGJ5qz2EXzuAV4h2/UwZSkv61MACTCiF5yGJMpgn/jA0=
+  file:
+    - extract-serac-win.exe
+    - extract-serac-linux
+    - extract-serac-macos
+  draft: true
+  on:
+    repo: c2corg/extract-serac
