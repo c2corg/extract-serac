@@ -15,4 +15,4 @@ deploy:
     - extract-serac-macos
   draft: true
   on:
-    repo: c2corg/extract-serac
+    tags: true
