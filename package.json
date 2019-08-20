@@ -1,0 +1,14 @@
+{
+  "name": "xreports",
+  "version": "1.0.0",
+  "description": "",
+  "main": "serac.js",
+  "scripts": {},
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "0.19.0",
+    "csv-stringify": "5.3.3",
+    "yargs": "14.0.0"
+  }
+}
