@@ -13,6 +13,5 @@ deploy:
     - extract-serac-win.exe
     - extract-serac-linux
     - extract-serac-macos
-  draft: true
   on:
     tags: true
