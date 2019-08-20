@@ -3,9 +3,8 @@ node_js:
   - 12
 install:
   - npm ci
-  - npm i -g pkg
 script:
-  - "pkg extract-serac.js"
+  - "./node_modules/.bin/pkg extract-serac.js"
 deploy:
   provider: releases
   api_key:
