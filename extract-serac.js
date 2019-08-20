@@ -14,97 +14,99 @@ let fileOutput;
 
 const i18n = Object.assign(
   {
-    'true': 'oui',
-    'false': 'non'
+    true: 'oui',
+    false: 'non'
   },
   {
-    'hiking': 'randonnée',
-    'ice_climbing': 'cascade de glace',
-    'mountain_biking': 'VTT',
-    'mountain_climbing': 'rocher haute-montagne',
-    'paragliding': 'parapente',
-    'rock_climbing': 'escalade',
-    'skitouring': 'ski de randonnée',
-    'slacklining': 'slackline',
-    'snowshoeing': 'raquettes',
-    'snow_ice_mixed': 'neige glace mixte',
-    'via_ferrata': 'via ferrata'
+    hiking: 'randonnée',
+    ice_climbing: 'cascade de glace',
+    mountain_biking: 'VTT',
+    mountain_climbing: 'rocher haute-montagne',
+    paragliding: 'parapente',
+    rock_climbing: 'escalade',
+    skitouring: 'ski de randonnée',
+    slacklining: 'slackline',
+    snowshoeing: 'raquettes',
+    snow_ice_mixed: 'neige glace mixte',
+    via_ferrata: 'via ferrata'
   },
   {
-    "empty": 'vide',
-    "draft": 'ébauche',
-    "medium": 'moyen',
-    "fine": 'bon',
-    "great": 'excellent'
+    empty: 'vide',
+    draft: 'ébauche',
+    medium: 'moyen',
+    fine: 'bon',
+    great: 'excellent'
   },
   {
-    "avalanche": 'avalanche',
-    "stone_fall": 'chute de pierres',
-    "falling_ice": 'chute de glace',
-    "person_fall": 'chute d\'une personne',
-    "crevasse_fall": 'chute en crevasse',
-    "roped_fall": 'chute encordé',
-    "physical_failure": 'défaillance physique',
-    "lightning": 'foudre',
-    "other": 'autre'
+    avalanche: 'avalanche',
+    stone_fall: 'chute de pierres',
+    falling_ice: 'chute de glace',
+    person_fall: "chute d'une personne",
+    crevasse_fall: 'chute en crevasse',
+    roped_fall: 'chute encordé',
+    physical_failure: 'défaillance physique',
+    lightning: 'foudre',
+    other: 'autre'
   },
   {
-    "severity_no": 'pas de blessure',
-    "1d_to_3d": 'De 1 à 3 jours',
-    "4d_to_1m": 'De 4 jours à 1 mois',
-    "1m_to_3m": 'De 1 à 3 mois',
-    "more_than_3m": 'supérieur à 3 mois'
+    severity_no: 'pas de blessure',
+    '1d_to_3d': 'De 1 à 3 jours',
+    '4d_to_1m': 'De 4 jours à 1 mois',
+    '1m_to_3m': 'De 1 à 3 mois',
+    more_than_3m: 'supérieur à 3 mois'
   },
   {
-    'level_1': '1 - faible',
-    'level_2': '2 - limité',
-    'level_3': '3 - marqué',
-    'level_4': '4 - fort',
-    'level_5': '5 - très fort',
-    'level_na': 'non renseigné'
+    level_1: '1 - faible',
+    level_2: '2 - limité',
+    level_3: '3 - marqué',
+    level_4: '4 - fort',
+    level_5: '5 - très fort',
+    level_na: 'non renseigné'
   },
   {
-    'slope_lt_30': '<30',
-    'slope_30_35': '30-35',
-    'slope_35_40': '35-40',
-    'slope_40_45': '40-45',
-    'slope_gt_45': '>45'
+    slope_lt_30: '<30',
+    slope_30_35: '30-35',
+    slope_35_40: '35-40',
+    slope_40_45: '40-45',
+    slope_gt_45: '>45'
   },
   {
-    'female': 'F',
-    'male': 'H'
+    female: 'F',
+    male: 'H'
   },
   {
-    "primary_impacted": 'victime principale',
-    "secondary_impacted": 'victime secondaire',
-    "internal_witness": 'témoin direct',
-    "external_witness": 'témoin extérieur'
+    primary_impacted: 'victime principale',
+    secondary_impacted: 'victime secondaire',
+    internal_witness: 'témoin direct',
+    external_witness: 'témoin extérieur'
   },
   {
-    "non_autonomous": 'non autonome',
-    "autonomous": 'autonome',
-    "initiator": 'débrouillé',
-    "expert": 'expert'
+    non_autonomous: 'non autonome',
+    autonomous: 'autonome',
+    initiator: 'débrouillé',
+    expert: 'expert'
   },
   {
-    "activity_rate_1": "1ère fois de sa vie",
-    "activity_rate_10": "moins d'1 fois par mois",
-    "activity_rate_150": "au moins 3 fois par semaine",
-    "activity_rate_20": "1 fois par mois",
-    "activity_rate_30": "2 à 3 fois par mois",
-    "activity_rate_5": "moins d'1 fois par an",
-    "activity_rate_50": "1 à 2 fois par semaine"
+    activity_rate_1: '1ère fois de sa vie',
+    activity_rate_10: "moins d'1 fois par mois",
+    activity_rate_150: 'au moins 3 fois par semaine',
+    activity_rate_20: '1 fois par mois',
+    activity_rate_30: '2 à 3 fois par mois',
+    activity_rate_5: "moins d'1 fois par an",
+    activity_rate_50: '1 à 2 fois par semaine'
   },
   {
-    "nb_outings_14": "de 10 à 14",
-    "nb_outings_15": "15 et plus",
-    "nb_outings_4": "de 0 à 4",
-    "nb_outings_9": "de 5 à 9"
+    nb_outings_14: 'de 10 à 14',
+    nb_outings_15: '15 et plus',
+    nb_outings_4: 'de 0 à 4',
+    nb_outings_9: 'de 5 à 9'
   },
-  { // FIXME: il y a un souci probable dans les traductions
-    "previous_injuries_2": 'autres blessures',
-    "previous_injuries_3": 'autres blessures'
-  });
+  {
+    // FIXME: il y a un souci probable dans les traductions
+    previous_injuries_2: 'autres blessures',
+    previous_injuries_3: 'autres blessures'
+  }
+);
 
 let token;
 
@@ -126,28 +128,22 @@ async function login() {
 }
 
 async function xreports(offset) {
-  const response = await axios.get(
-    `${baseUrl}/xreports`,
-    {
-      params: { offset },
-      headers: { 'Authorization': `JWT token="${token}"` }
-    }
-  );
+  const response = await axios.get(`${baseUrl}/xreports`, {
+    params: { offset },
+    headers: { Authorization: `JWT token="${token}"` }
+  });
   return response.data;
 }
 
 async function xreport(id) {
-  const response = await axios.get(
-    `${baseUrl}/xreports/${id}`,
-    {
-      headers: { 'Authorization': `JWT token="${token}"` }
-    }
-  );
+  const response = await axios.get(`${baseUrl}/xreports/${id}`, {
+    headers: { Authorization: `JWT token="${token}"` }
+  });
   return response.data;
 }
 
 function findBestLocale(langs) {
-  return lang = preferredLangs.find(lang => langs.includes(lang)) || langs[0];
+  return (lang = preferredLangs.find(lang => langs.includes(lang)) || langs[0]);
 }
 
 function reportToCsvLine(report) {
@@ -224,35 +220,35 @@ const header = [
   'Contributeur',
   'Contributeur (lien)',
   'Date',
-  'Type d\'évènement',
+  "Type d'évènement",
   'Nombre de participants',
   'Participants associés',
   'Nombre de personnes touchées',
   'Intervention des services de secours',
   'Gravité',
-  'Niveau de risque d\'avalanche',
+  "Niveau de risque d'avalanche",
   'Pente de la zone de départ',
   'Âge',
   'Sexe',
   'Implication dans la situation',
   'Niveau de pratique',
-  'Fréquence de pratique dans l\'activité',
+  "Fréquence de pratique dans l'activité",
   'Nombre de sorties',
   'Blessures antérieures',
 
   'Résumé',
   'Description',
   'Lieu',
-  'Étude de l\'itinéraire',
+  "Étude de l'itinéraire",
   'Conditions',
   'Préparation physique et niveau technique',
   'Motivations',
   'Gestion du groupe',
-  'Niveau de l\'attention et évaluation des risques',
-  'Gestion de l\'horaire',
+  "Niveau de l'attention et évaluation des risques",
+  "Gestion de l'horaire",
   'Mesures et techniques de sécurité mises en oeuvre',
-  'Éléments ayant atténué les conséquences de l\'évènement',
-  'Éléments ayant aggravé les conséquences de l\'évènement',
+  "Éléments ayant atténué les conséquences de l'évènement",
+  "Éléments ayant aggravé les conséquences de l'évènement",
   'Conséquences sur les pratiques',
   'Conséquences physiques et autres commentaires',
 
@@ -266,7 +262,10 @@ function join(items, mapFn) {
 }
 
 function associated(items, type) {
-  return join(items, item => `https://www.camptocamp.org/${type}/${item.document_id}`);
+  return join(
+    items,
+    item => `https://www.camptocamp.org/${type}/${item.document_id}`
+  );
 }
 
 function geometry(geometry) {
@@ -284,52 +283,47 @@ async function main() {
   console.log(`${total} reports in DB`);
   let i = 0;
   do {
-    console.log(`Fetching reports ${offset + 1}-${Math.min(offset + 30, total)}/${total}`);
+    console.log(
+      `Fetching reports ${offset + 1}-${Math.min(offset + 30, total)}/${total}`
+    );
     let { documents } = await xreports(offset, token);
-    let newReports = await Promise.all(documents
-      .map(async report => {
+    let newReports = await Promise.all(
+      documents.map(async report => {
         return await xreport(report.document_id);
-      }));
-    reports = [
-      ...reports,
-      ...newReports.map(reportToCsvLine)
-    ];
+      })
+    );
+    reports = [...reports, ...newReports.map(reportToCsvLine)];
     offset += 30;
-  }
-  while (offset <= total);
+  } while (offset <= total);
 
-  stringify(
-    [ header, ...reports],
-    { quoted: true},
-    (err, output) => {
+  stringify([header, ...reports], { quoted: true }, (err, output) => {
+    if (err) {
+      throw err;
+    }
+    fs.writeFile(fileOutput, output, err => {
       if (err) {
         throw err;
       }
-      fs.writeFile(fileOutput, output, err => {
-        if (err) {
-          throw err;
-        }
-        console.log('Done - output saved to ' + path.normalize(fileOutput));
-      })
-    }
-  );
+      console.log('Done - output saved to ' + path.normalize(fileOutput));
+    });
+  });
 }
 
 const argv = require('yargs')
   .options({
-    'u': {
+    u: {
       alias: 'user',
       describe: 'Username for authentication',
       type: 'string',
       demandOption: true
     },
-    'p': {
+    p: {
       alias: 'password',
       describe: 'Password for authentication',
       type: 'string',
       demandOption: true
     },
-    'o': {
+    o: {
       alias: 'output',
       describe: 'Where to store ouput CSV file',
       default: 'xreports.csv',
@@ -341,8 +335,7 @@ const argv = require('yargs')
   .describe('v', 'Show version information')
   .alias('h', 'help')
   .help('h')
-  .usage('Usage: extract-serac -u <username> -p <password> [-o <file>]')
-  .argv;
+  .usage('Usage: extract-serac -u <username> -p <password> [-o <file>]').argv;
 
 user = argv.user;
 password = argv.password;
