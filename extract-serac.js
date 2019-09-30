@@ -4,12 +4,16 @@ const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 const stringify = require('csv-stringify');
+const MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
 
 const baseUrl = 'https://api.camptocamp.org';
 const preferredLangs = ['fr', 'en', 'it', 'en', 'de', 'ca', 'eu'];
 
 let user;
 let password;
+let dbuser;
+let dbpassword;
 let fileOutput;
 
 const i18n = Object.assign(
@@ -275,6 +279,10 @@ function geometry(geometry) {
   return '[' + JSON.parse(geometry.geom).coordinates.join(':') + ']';
 }
 
+function reportToJson(report) {
+  return report;
+}
+
 async function main() {
   token = await login();
 
@@ -292,21 +300,22 @@ async function main() {
         return await xreport(report.document_id);
       })
     );
-    reports = [...reports, ...newReports.map(reportToCsvLine)];
+    reports = [...reports, ...newReports.map(reportToJson)];
     offset += 30;
   } while (offset <= total);
 
-  stringify([header, ...reports], { quoted: true }, (err, output) => {
-    if (err) {
-      throw err;
-    }
-    fs.writeFile(fileOutput, output, err => {
-      if (err) {
-        throw err;
-      }
-      console.log('Done - output saved to ' + path.normalize(fileOutput));
+  let url = `mongodb+srv://${dbuser}:${dbpassword}@cluster0-sgktu.mongodb.net/test?retryWrites=true&w=majority`;
+  const client = new MongoClient(url, { useNewUrlParser: true });
+  client.connect(err => {
+    assert.equal(null, err);
+    console.log('Connected successfully to server');
+    const collection = client.db('test').collection('xreport');
+    // perform actions on the collection object
+    collection.insertMany(reports, () => {
+      client.close();
     });
   });
+  reports.forEach(report => {});
 }
 
 const argv = require('yargs')
@@ -319,6 +328,18 @@ const argv = require('yargs')
     },
     p: {
       alias: 'password',
+      describe: 'Password for authentication',
+      type: 'string',
+      demandOption: true
+    },
+    dbu: {
+      alias: 'dbuser',
+      describe: 'Username for authentication',
+      type: 'string',
+      demandOption: true
+    },
+    dbp: {
+      alias: 'dbpassword',
       describe: 'Password for authentication',
       type: 'string',
       demandOption: true
@@ -339,6 +360,8 @@ const argv = require('yargs')
 
 user = argv.user;
 password = argv.password;
+dbuser = argv.dbuser;
+dbpassword = argv.dbpassword;
 fileOutput = path.resolve(argv.output);
 
 main();
