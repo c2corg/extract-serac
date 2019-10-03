@@ -280,7 +280,66 @@ function geometry(geometry) {
 }
 
 function reportToJson(report) {
-  return report;
+  return {
+    // anonymous: true,
+    elevation: report.elevation,
+    nb_participants: report.nb_participants,
+    geometry: report.geometry.geom,
+    age: report.age,
+    // type: 'x',
+    author: report.author,
+    autonomy: report.autonomy,
+    avalanche_slope: report.avalanche_slope,
+    /* associations: {
+      images: [],
+      outings: [],
+      articles: [],
+      users: [],
+      waypoints: []
+    },
+    quality: 'medium', */
+    activities: report.activities,
+    nb_outings: report.nb_outings,
+    // document_id: report.document_id,
+    gender: report.gender,
+    // available_langs: ['fr'],
+    nb_impacted: report.nb_impacted,
+    // areas: [],
+    // protected
+    date: report.date,
+    rescue: report.rescue,
+    // disable_comments: false,
+    // version,
+    author_status: report.author_status,
+    event_type: report.event_type,
+    severity: report.severity,
+    activity_rate: report.activity_rate,
+    previous_injuries: report.previous_injuries,
+    avalanche_level: report.avalanche_level,
+    locales: [
+      {
+        modifications: report.locales[0].modifications,
+        motivations: report.locales[0].motivations,
+        training: report.locales[0].training,
+        place: report.locales[0].place,
+        route_study: report.locales[0].route_study,
+        summary: report.locales[0].summary,
+        safety: report.locales[0].safety,
+        description: report.locales[0].description,
+        reduce_impact: report.locales[0].reduce_impact,
+        risk: report.locales[0].risk,
+        title: report.locales[0].title,
+        other_comments: report.locales[0].other_comments,
+        increase_impact: report.locales[0].increase_impact,
+        time_management: report.locales[0].time_management,
+        conditions: report.locales[0].conditions,
+        group_management: report.locales[0].group_management
+        // version
+        // topic_id
+        // lang: 'fr'
+      }
+    ]
+  };
 }
 
 async function main() {
