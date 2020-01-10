@@ -19,17 +19,12 @@ const i18n: Record<string, string | undefined> = Object.assign(
     false: 'non',
   },
   {
-    hiking: 'randonnée',
+    sport_climbing: 'escalade en falaise',
+    multipitch_climbing: 'escalade en grande voie',
+    alpine_climbing: 'rocher montagne (TA)',
     ice_climbing: 'cascade de glace',
-    mountain_biking: 'VTT',
-    mountain_climbing: 'rocher haute-montagne',
-    paragliding: 'parapente',
-    rock_climbing: 'escalade',
     skitouring: 'ski de randonnée',
-    slacklining: 'slackline',
-    snowshoeing: 'raquettes',
-    snow_ice_mixed: 'neige glace mixte',
-    via_ferrata: 'via ferrata',
+    other: 'autres activités',
   },
   {
     empty: 'vide',
@@ -40,13 +35,15 @@ const i18n: Record<string, string | undefined> = Object.assign(
   },
   {
     avalanche: 'avalanche',
-    stone_fall: 'chute de pierres',
-    falling_ice: 'chute de glace',
+    stone_ice_fall: 'chute de pierre/glace/sérac',
+    ice_cornice_collapse: 'effondrement cascade ou corniche',
     person_fall: "chute d'une personne",
     crevasse_fall: 'chute en crevasse',
-    roped_fall: 'chute encordé',
     physical_failure: 'défaillance physique',
-    lightning: 'foudre',
+    blocked_person: 'personne bloquée',
+    weather_event: 'évènement météo',
+    safety_operation: 'manœuvre de sécurité',
+    critical_situation: 'situation complexe sans incident',
     other: 'autre',
   },
   {
@@ -84,28 +81,27 @@ const i18n: Record<string, string | undefined> = Object.assign(
   {
     non_autonomous: 'non autonome',
     autonomous: 'autonome',
-    initiator: 'débrouillé',
     expert: 'expert',
   },
   {
-    activity_rate_1: '1ère fois de sa vie',
-    activity_rate_10: "moins d'1 fois par mois",
-    activity_rate_150: 'au moins 3 fois par semaine',
-    activity_rate_20: '1 fois par mois',
-    activity_rate_30: '2 à 3 fois par mois',
-    activity_rate_5: "moins d'1 fois par an",
-    activity_rate_50: '1 à 2 fois par semaine',
-  },
-  {
-    nb_outings_14: 'de 10 à 14',
-    nb_outings_15: '15 et plus',
-    nb_outings_4: 'de 0 à 4',
-    nb_outings_9: 'de 5 à 9',
+    activity_rate_y5: '5 fois par an',
+    activity_rate_m2: '2 fois par mois',
+    activity_rate_w1: '1 fois par semaine',
   },
   {
     // FIXME: there is most certainly a problem with translations
     previous_injuries_2: 'autres blessures',
     previous_injuries_3: 'autres blessures',
+  },
+  {
+    federal_supervisor: 'Initiateur fédéral',
+    federal_trainer: 'Entraineur fédéral',
+    professional_diploma: 'Diplôme professionnel',
+  },
+  {
+    no_supervision: 'Non encadré',
+    federal_supervision: 'Encadrement fédéral',
+    professional_supervision: 'Encadrement professionnel',
   },
 );
 
@@ -205,7 +201,7 @@ function reportToCsvLine(report: XReport): stringify.Input {
     `https://www.camptocamp.org/xreports/${report.document_id}`,
 
     locale?.title,
-    join(report.activities, (activity: string) => i18n[activity]),
+    i18n[report.event_activity ?? ''],
     i18n[report.quality],
 
     geometry(report.geometry),
@@ -218,7 +214,7 @@ function reportToCsvLine(report: XReport): stringify.Input {
     report.author?.name,
     `https://www.camptocamp.org/users/${report.author?.user_id}`,
     report.date,
-    join(report.event_type, (type: string) => i18n[type]),
+    i18n[report.event_type ?? ''],
     report.nb_participants,
     associated(report.associations.users, 'users'),
     report.nb_impacted,
@@ -231,8 +227,9 @@ function reportToCsvLine(report: XReport): stringify.Input {
     i18n[report.author_status ?? ''],
     i18n[report.autonomy ?? ''],
     i18n[report.activity_rate ?? ''],
-    i18n[report.nb_outings ?? ''],
     i18n[report.previous_injuries ?? ''],
+    i18n[report.qualification ?? ''],
+    i18n[report.supervision ?? ''],
 
     locale?.summary,
     locale?.description,
@@ -284,8 +281,9 @@ const header: string[] = [
   'Implication dans la situation',
   'Niveau de pratique',
   "Fréquence de pratique dans l'activité",
-  'Nombre de sorties',
   'Blessures antérieures',
+  'Qualification',
+  'Encadrement',
 
   'Résumé',
   'Description',
