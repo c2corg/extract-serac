@@ -65,3 +65,5 @@ typings/
 
 # pkg output
 extract-serac-*
+
+lib/

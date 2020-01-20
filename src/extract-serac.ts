@@ -1,21 +1,22 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
-const axios = require('axios');
-const stringify = require('csv-stringify');
+import { writeFile } from 'fs';
+import { normalize, resolve } from 'path';
+import axios from 'axios';
+import yargs from 'yargs';
+import stringify from 'csv-stringify';
+
+import { XReport, Geometry, Association } from './xreport';
+import { XReports } from './xreports';
 
 const baseUrl = 'https://api.camptocamp.org';
-const preferredLangs = ['fr', 'en', 'it', 'en', 'de', 'ca', 'eu'];
+const preferredLangs = ['fr', 'en', 'it', 'es', 'de', 'ca', 'eu'];
 
-let user;
-let password;
-let fileOutput;
-
-const i18n = Object.assign(
+const i18n: Record<string, string | undefined> = Object.assign(
+  { '': undefined },
   {
     true: 'oui',
-    false: 'non'
+    false: 'non',
   },
   {
     hiking: 'randonnée',
@@ -28,14 +29,14 @@ const i18n = Object.assign(
     slacklining: 'slackline',
     snowshoeing: 'raquettes',
     snow_ice_mixed: 'neige glace mixte',
-    via_ferrata: 'via ferrata'
+    via_ferrata: 'via ferrata',
   },
   {
     empty: 'vide',
     draft: 'ébauche',
     medium: 'moyen',
     fine: 'bon',
-    great: 'excellent'
+    great: 'excellent',
   },
   {
     avalanche: 'avalanche',
@@ -46,14 +47,14 @@ const i18n = Object.assign(
     roped_fall: 'chute encordé',
     physical_failure: 'défaillance physique',
     lightning: 'foudre',
-    other: 'autre'
+    other: 'autre',
   },
   {
     severity_no: 'pas de blessure',
     '1d_to_3d': 'De 1 à 3 jours',
     '4d_to_1m': 'De 4 jours à 1 mois',
     '1m_to_3m': 'De 1 à 3 mois',
-    more_than_3m: 'supérieur à 3 mois'
+    more_than_3m: 'supérieur à 3 mois',
   },
   {
     level_1: '1 - faible',
@@ -61,30 +62,30 @@ const i18n = Object.assign(
     level_3: '3 - marqué',
     level_4: '4 - fort',
     level_5: '5 - très fort',
-    level_na: 'non renseigné'
+    level_na: 'non renseigné',
   },
   {
     slope_lt_30: '<30',
     slope_30_35: '30-35',
     slope_35_40: '35-40',
     slope_40_45: '40-45',
-    slope_gt_45: '>45'
+    slope_gt_45: '>45',
   },
   {
     female: 'F',
-    male: 'H'
+    male: 'H',
   },
   {
     primary_impacted: 'victime principale',
     secondary_impacted: 'victime secondaire',
     internal_witness: 'témoin direct',
-    external_witness: 'témoin extérieur'
+    external_witness: 'témoin extérieur',
   },
   {
     non_autonomous: 'non autonome',
     autonomous: 'autonome',
     initiator: 'débrouillé',
-    expert: 'expert'
+    expert: 'expert',
   },
   {
     activity_rate_1: '1ère fois de sa vie',
@@ -93,32 +94,64 @@ const i18n = Object.assign(
     activity_rate_20: '1 fois par mois',
     activity_rate_30: '2 à 3 fois par mois',
     activity_rate_5: "moins d'1 fois par an",
-    activity_rate_50: '1 à 2 fois par semaine'
+    activity_rate_50: '1 à 2 fois par semaine',
   },
   {
     nb_outings_14: 'de 10 à 14',
     nb_outings_15: '15 et plus',
     nb_outings_4: 'de 0 à 4',
-    nb_outings_9: 'de 5 à 9'
+    nb_outings_9: 'de 5 à 9',
   },
   {
-    // FIXME: il y a un souci probable dans les traductions
+    // FIXME: there is most certainly a problem with translations
     previous_injuries_2: 'autres blessures',
-    previous_injuries_3: 'autres blessures'
-  }
+    previous_injuries_3: 'autres blessures',
+  },
 );
 
-let token;
+const argv = yargs
+  .options({
+    user: {
+      alias: 'u',
+      describe: 'Username for authentication',
+      type: 'string',
+      demandOption: true,
+    },
+    password: {
+      alias: 'p',
+      describe: 'Password for authentication',
+      type: 'string',
+      demandOption: true,
+    },
+    output: {
+      alias: 'o',
+      describe: 'Where to store ouput CSV file',
+      default: 'xreports.csv',
+      type: 'string',
+    },
+  })
+  .alias('v', 'version')
+  .version()
+  .describe('v', 'Show version information')
+  .alias('h', 'help')
+  .help('h')
+  .usage('Usage: extract-serac -u <username> -p <password> [-o <file>]').argv;
 
-let reports = [];
+const user: string = argv.user;
+const password: string = argv.password;
+const fileOutput: string = resolve(argv.output);
 
-async function login() {
+let token: string;
+
+let reports: stringify.Input = [];
+
+async function login(): Promise<string> {
   try {
     const response = await axios.post(`${baseUrl}/users/login`, {
       username: user,
       password,
       discourse: false,
-      remember_me: true
+      remember_me: true,
     });
     return response.data.token;
   } catch (error) {
@@ -127,85 +160,103 @@ async function login() {
   }
 }
 
-async function xreports(offset) {
-  const response = await axios.get(`${baseUrl}/xreports`, {
+async function xreports(offset: number): Promise<XReports> {
+  const response = await axios.get<XReports>(`${baseUrl}/xreports`, {
     params: { offset },
-    headers: { Authorization: `JWT token="${token}"` }
+    headers: { Authorization: `JWT token="${token}"` },
   });
   return response.data;
 }
 
-async function xreport(id) {
-  const response = await axios.get(`${baseUrl}/xreports/${id}`, {
-    headers: { Authorization: `JWT token="${token}"` }
+async function xreport(id: number): Promise<XReport> {
+  const response = await axios.get<XReport>(`${baseUrl}/xreports/${id}`, {
+    headers: { Authorization: `JWT token="${token}"` },
   });
   return response.data;
 }
 
-function findBestLocale(langs) {
-  return (lang = preferredLangs.find(lang => langs.includes(lang)) || langs[0]);
+function findBestLocale(langs: string[]): string {
+  return preferredLangs.find(lang => langs.includes(lang)) || langs[0];
 }
 
-function reportToCsvLine(report) {
+function join<T>(items: T[], mapFn: (item: T) => string | undefined): string {
+  const join: string = items
+    .map(mapFn)
+    .reduce((acc: string, value: string | undefined) => (value ? acc + value + ',' : acc), '');
+  return join.length > 0 ? join.slice(0, -1) : join;
+}
+
+function associated(items: Association[], type: string): string {
+  return join(items, (item: Association) => `https://www.camptocamp.org/${type}/${item.document_id}`);
+}
+
+function geometry(geometry?: Geometry): string | undefined {
+  if (!geometry?.geom) {
+    return undefined;
+  }
+  return '[' + JSON.parse(geometry.geom).coordinates.join(':') + ']';
+}
+
+function reportToCsvLine(report: XReport): stringify.Input {
   const lang = findBestLocale(report.available_langs);
   const locale = report.locales.find(locale => locale.lang === lang);
   return [
     report.document_id,
     `https://www.camptocamp.org/xreports/${report.document_id}`,
 
-    locale.title,
-    join(report.activities, activity => i18n[activity]),
+    locale?.title,
+    join(report.activities, (activity: string) => i18n[activity]),
     i18n[report.quality],
 
     geometry(report.geometry),
     report.elevation,
     join(report.areas, area => {
       const l = findBestLocale(area.locales.map(l => l.lang));
-      return area.locales.find(locale => locale.lang === l).title;
+      return area.locales.find(locale => locale.lang === l)?.title;
     }),
 
-    report.author.name,
-    `https://www.camptocamp.org/users/${report.author.user_id}`,
+    report.author?.name,
+    `https://www.camptocamp.org/users/${report.author?.user_id}`,
     report.date,
-    join(report.event_type, type => i18n[type]),
+    join(report.event_type, (type: string) => i18n[type]),
     report.nb_participants,
     associated(report.associations.users, 'users'),
     report.nb_impacted,
-    i18n[report.rescue],
-    i18n[report.severity],
-    i18n[report.avalanche_level],
-    i18n[report.avalanche_slope],
+    i18n[report.rescue ?? ''],
+    i18n[report.severity ?? ''],
+    i18n[report.avalanche_level ?? ''],
+    i18n[report.avalanche_slope ?? ''],
     report.age,
-    i18n[report.gender],
-    i18n[report.author_status],
-    i18n[report.autonomy],
-    i18n[report.activity_rate],
-    i18n[report.nb_outings],
-    i18n[report.previous_injuries],
+    i18n[report.gender ?? ''],
+    i18n[report.author_status ?? ''],
+    i18n[report.autonomy ?? ''],
+    i18n[report.activity_rate ?? ''],
+    i18n[report.nb_outings ?? ''],
+    i18n[report.previous_injuries ?? ''],
 
-    locale.summary,
-    locale.description,
-    locale.place,
-    locale.route_study,
-    locale.conditions,
-    locale.training,
-    locale.motivations,
-    locale.group_management,
-    locale.risk,
-    locale.time_management,
-    locale.safety,
-    locale.reduce_impact,
-    locale.increase_impact,
-    locale.modifications,
-    locale.other_comments,
+    locale?.summary,
+    locale?.description,
+    locale?.place,
+    locale?.route_study,
+    locale?.conditions,
+    locale?.training,
+    locale?.motivations,
+    locale?.group_management,
+    locale?.risk,
+    locale?.time_management,
+    locale?.safety,
+    locale?.reduce_impact,
+    locale?.increase_impact,
+    locale?.modifications,
+    locale?.other_comments,
 
     associated(report.associations.routes, 'routes'),
     associated(report.associations.outings, 'outings'),
-    associated(report.associations.articles, 'articles')
+    associated(report.associations.articles, 'articles'),
   ];
 }
 
-const header = [
+const header: string[] = [
   'Document',
   'Document (lien)',
 
@@ -254,43 +305,22 @@ const header = [
 
   'Itinéraires associés',
   'Sorties associées',
-  'Articles associés'
+  'Articles associés',
 ];
 
-function join(items, mapFn) {
-  return items.map(mapFn).reduce((acc, value) => acc + value + ',', '');
-}
-
-function associated(items, type) {
-  return join(
-    items,
-    item => `https://www.camptocamp.org/${type}/${item.document_id}`
-  );
-}
-
-function geometry(geometry) {
-  if (!geometry || !geometry.geom) {
-    return null;
-  }
-  return '[' + JSON.parse(geometry.geom).coordinates.join(':') + ']';
-}
-
-async function main() {
+async function main(): Promise<void> {
   token = await login();
 
   let offset = 0;
-  let { total } = await xreports(offset, token);
+  const { total } = await xreports(offset);
   console.log(`${total} reports in DB`);
-  let i = 0;
   do {
-    console.log(
-      `Fetching reports ${offset + 1}-${Math.min(offset + 30, total)}/${total}`
-    );
-    let { documents } = await xreports(offset, token);
-    let newReports = await Promise.all(
+    console.log(`Fetching reports ${offset + 1}-${Math.min(offset + 30, total)}/${total}`);
+    const { documents } = await xreports(offset);
+    const newReports = await Promise.all(
       documents.map(async report => {
         return await xreport(report.document_id);
-      })
+      }),
     );
     reports = [...reports, ...newReports.map(reportToCsvLine)];
     offset += 30;
@@ -300,45 +330,13 @@ async function main() {
     if (err) {
       throw err;
     }
-    fs.writeFile(fileOutput, output, err => {
+    writeFile(fileOutput, output, err => {
       if (err) {
         throw err;
       }
-      console.log('Done - output saved to ' + path.normalize(fileOutput));
+      console.log('Done - output saved to ' + normalize(fileOutput));
     });
   });
 }
-
-const argv = require('yargs')
-  .options({
-    u: {
-      alias: 'user',
-      describe: 'Username for authentication',
-      type: 'string',
-      demandOption: true
-    },
-    p: {
-      alias: 'password',
-      describe: 'Password for authentication',
-      type: 'string',
-      demandOption: true
-    },
-    o: {
-      alias: 'output',
-      describe: 'Where to store ouput CSV file',
-      default: 'xreports.csv',
-      type: 'string'
-    }
-  })
-  .alias('v', 'version')
-  .version()
-  .describe('v', 'Show version information')
-  .alias('h', 'help')
-  .help('h')
-  .usage('Usage: extract-serac -u <username> -p <password> [-o <file>]').argv;
-
-user = argv.user;
-password = argv.password;
-fileOutput = path.resolve(argv.output);
 
 main();
