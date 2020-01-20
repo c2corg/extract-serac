@@ -10,7 +10,9 @@
     "lib"
   ],
   "scripts": {
+    "cli": "ts-node -T src/extract-serac.ts",
     "build": "tsc -p .",
+    "lint": "eslint --fix src/**",
     "pkg": "pkg lib/extract-serac.js"
   },
   "author": "camptocamp.org",
