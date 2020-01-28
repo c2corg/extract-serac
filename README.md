@@ -1,4 +1,4 @@
-![CI badge for master branch](https://github.com/c2corg/extract-serac/workflows/Build/badge.svg?branch=master)
+[![GitHub license](https://img.shields.io/github/license/c2corg/extract-serac.svg)](https://github.com/c2corg/extract-serac/blob/master/LICENSE) ![CI badge for master branch](https://github.com/c2corg/extract-serac/workflows/Build/badge.svg?branch=master) [![Total alerts](https://img.shields.io/lgtm/alerts/g/c2corg/extract-serac.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/c2corg/extract-serac/alerts/) [![Known Vulnerabilities](https://snyk.io/test/github/c2corg/extract-serac/badge.svg)](https://snyk.io/test/github/c2corg/extract-serac)
 
 # extract-serac
 
