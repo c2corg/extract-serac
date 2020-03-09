@@ -21,7 +21,7 @@
     "axios": "0.19.2",
     "csv-stringify": "5.3.6",
     "uninstall": "0.0.0",
-    "yargs": "15.1.0"
+    "yargs": "15.3.0"
   },
   "devDependencies": {
     "@types/node": "13.9.0",
