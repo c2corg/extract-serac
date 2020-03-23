@@ -176,7 +176,7 @@ async function xreport(id: number): Promise<XReport> {
 }
 
 function findBestLocale(langs: string[]): string {
-  return preferredLangs.find(lang => langs.includes(lang)) || langs[0];
+  return preferredLangs.find((lang) => langs.includes(lang)) || langs[0];
 }
 
 function join<T>(items: T[], mapFn: (item: T) => string | undefined): string {
@@ -199,7 +199,7 @@ function geometry(geometry?: Geometry): string | undefined {
 
 function reportToCsvLine(report: XReport): stringify.Input {
   const lang = findBestLocale(report.available_langs);
-  const locale = report.locales.find(locale => locale.lang === lang);
+  const locale = report.locales.find((locale) => locale.lang === lang);
   return [
     report.document_id,
     `https://www.camptocamp.org/xreports/${report.document_id}`,
@@ -210,9 +210,9 @@ function reportToCsvLine(report: XReport): stringify.Input {
 
     geometry(report.geometry),
     report.elevation,
-    join(report.areas, area => {
-      const l = findBestLocale(area.locales.map(l => l.lang));
-      return area.locales.find(locale => locale.lang === l)?.title;
+    join(report.areas, (area) => {
+      const l = findBestLocale(area.locales.map((l) => l.lang));
+      return area.locales.find((locale) => locale.lang === l)?.title;
     }),
 
     report.author?.name,
@@ -318,7 +318,7 @@ async function main(): Promise<void> {
     console.log(`Fetching reports ${offset + 1}-${Math.min(offset + 30, total)}/${total}`);
     const { documents } = await xreports(offset);
     const newReports = await Promise.all(
-      documents.map(async report => {
+      documents.map(async (report) => {
         return await xreport(report.document_id);
       }),
     );
@@ -330,7 +330,7 @@ async function main(): Promise<void> {
     if (err) {
       throw err;
     }
-    writeFile(fileOutput, output, err => {
+    writeFile(fileOutput, output, (err) => {
       if (err) {
         throw err;
       }
