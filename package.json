@@ -12,7 +12,7 @@
   "scripts": {
     "cli": "ts-node -T src/extract-serac.ts",
     "build": "tsc -p .",
-    "lint": "eslint --fix src/**",
+    "lint": "prettier --check \"**/*.{ts,js,json,css,scss,less,md,html}\" && eslint --fix src/**",
     "pkg": "pkg lib/extract-serac.js"
   },
   "author": "camptocamp.org",
