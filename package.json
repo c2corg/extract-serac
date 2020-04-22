@@ -19,7 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "0.19.2",
-    "csv-stringify": "5.4.0",
+    "csv-stringify": "5.4.2",
     "uninstall": "0.0.0",
     "yargs": "15.3.1"
   },
