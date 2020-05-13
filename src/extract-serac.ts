@@ -330,6 +330,9 @@ async function main(): Promise<void> {
     if (err) {
       throw err;
     }
+    if (!output) {
+      throw new Error('No output');
+    }
     writeFile(fileOutput, output, (err) => {
       if (err) {
         throw err;
