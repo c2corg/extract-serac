@@ -54,7 +54,7 @@ export interface Associations {
 export interface XReport {
   document_id: number;
   areas: Area[];
-  activities: string[];
+  event_activity: string;
   activity_rate?: string;
   age?: number;
   associations: Associations;
@@ -66,15 +66,16 @@ export interface XReport {
   available_langs: string[];
   date?: string;
   elevation?: number;
-  event_type: string[];
+  event_type: string;
   gender?: string;
   geometry?: Geometry;
   nb_impacted?: number;
-  nb_outings?: string;
   nb_participants?: number;
   previous_injuries?: string;
+  qualification?: string;
   quality: string;
   rescue?: string;
   severity?: string;
+  supervision?: string;
   locales: XReportLocale[];
 }
