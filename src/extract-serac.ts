@@ -89,9 +89,8 @@ const i18n: Record<string, string | undefined> = Object.assign(
     activity_rate_w1: '1 fois par semaine',
   },
   {
-    // FIXME: there is most certainly a problem with translations
+    no: 'non',
     previous_injuries_2: 'autres blessures',
-    previous_injuries_3: 'autres blessures',
   },
   {
     federal_supervisor: 'Initiateur fédéral',
