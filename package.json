@@ -14,7 +14,7 @@
     "build": "tsc -p .",
     "lint": "prettier --check \"src/**/*.{ts,js,json,css,scss,less,md,html}\" && eslint --fix src/**",
     "pkg": "pkg lib/extract-serac.js",
-    "postinstall": "husky install",
+    "prepare": "husky install",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable"
   },
