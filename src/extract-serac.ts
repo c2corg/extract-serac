@@ -130,7 +130,8 @@ const argv = yargs
   .describe('v', 'Show version information')
   .alias('h', 'help')
   .help('h')
-  .usage('Usage: extract-serac -u <username> -p <password> [-o <file>]').argv;
+  .usage('Usage: extract-serac -u <username> -p <password> [-o <file>]')
+  .parseSync();
 
 const user: string = argv.user;
 const password: string = argv.password;
