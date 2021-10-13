@@ -2,7 +2,7 @@
 
 import { writeFile } from 'fs';
 import { normalize, resolve } from 'path';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import yargs from 'yargs';
 import stringify from 'csv-stringify';
 
@@ -143,7 +143,11 @@ let reports: stringify.Input = [];
 
 async function login(): Promise<string> {
   try {
-    const response = await axios.post(`${baseUrl}/users/login`, {
+    const response = await axios.post<
+      { token: string },
+      AxiosResponse<{ token: string }>,
+      { username: string; password: string; discourse: boolean; remember_me: boolean }
+    >(`${baseUrl}/users/login`, {
       username: user,
       password,
       discourse: false,
