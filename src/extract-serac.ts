@@ -4,7 +4,7 @@ import { writeFile } from 'fs';
 import { normalize, resolve } from 'path';
 import axios, { AxiosResponse } from 'axios';
 import yargs from 'yargs';
-import stringify from 'csv-stringify';
+import { stringify, Input } from 'csv-stringify';
 
 import { XReport, Geometry, Association } from './xreport';
 import { XReports } from './xreports';
@@ -139,7 +139,7 @@ const fileOutput: string = resolve(argv.output);
 
 let token: string;
 
-let reports: stringify.Input = [];
+let reports: Input = [];
 
 async function login(): Promise<string> {
   try {
@@ -197,7 +197,7 @@ function geometry(geometry?: Geometry): string | undefined {
   return '[' + JSON.parse(geometry.geom).coordinates.join(':') + ']';
 }
 
-function reportToCsvLine(report: XReport): stringify.Input {
+function reportToCsvLine(report: XReport): Input {
   const lang = findBestLocale(report.available_langs);
   const locale = report.locales.find((locale) => locale.lang === lang);
   return [
