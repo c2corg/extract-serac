@@ -6,8 +6,8 @@ import axios, { AxiosResponse } from 'axios';
 import yargs from 'yargs';
 import { stringify, Input } from 'csv-stringify';
 
-import { XReport, Geometry, Association } from './xreport';
-import { XReports } from './xreports';
+import type { XReport, Geometry, Association } from './xreport';
+import type { XReports } from './xreports';
 
 const baseUrl = 'https://api.camptocamp.org';
 const preferredLangs = ['fr', 'en', 'it', 'es', 'de', 'ca', 'eu'];
@@ -176,7 +176,7 @@ async function xreport(id: number): Promise<XReport> {
 }
 
 function findBestLocale(langs: string[]): string {
-  return preferredLangs.find((lang) => langs.includes(lang)) || langs[0];
+  return preferredLangs.find((lang) => langs.includes(lang)) || langs[0] || 'en';
 }
 
 function join<T>(items: T[], mapFn: (item: T) => string | undefined): string {
