@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@tsconfig/node16-strictest": "1.0.3",
-    "@types/node": "16.11.56",
+    "@types/node": "16.11.57",
     "@types/yargs": "17.0.12",
     "@typescript-eslint/eslint-plugin": "5.36.1",
     "@typescript-eslint/parser": "5.36.2",
