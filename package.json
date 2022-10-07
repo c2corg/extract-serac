@@ -21,7 +21,7 @@
   "author": "camptocamp.org",
   "license": "MIT",
   "dependencies": {
-    "axios": "1.0.0",
+    "axios": "1.1.0",
     "csv-stringify": "6.2.0",
     "uninstall": "0.0.0",
     "yargs": "17.6.0"
