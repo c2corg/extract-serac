@@ -30,7 +30,7 @@
     "@tsconfig/node16-strictest": "1.0.4",
     "@types/node": "16.18.7",
     "@types/yargs": "17.0.17",
-    "@typescript-eslint/eslint-plugin": "5.45.1",
+    "@typescript-eslint/eslint-plugin": "5.46.0",
     "@typescript-eslint/parser": "5.45.1",
     "eslint": "8.29.0",
     "eslint-config-prettier": "8.5.0",
