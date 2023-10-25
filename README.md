@@ -8,5 +8,5 @@ It requires a valid account with sufficient priviledges on <https://www.camptoca
 To use the tools, retrieve executable for your platform from the [latest release](https://github.com/c2corg/extract-serac/releases). Then, launch:
 
 ```sh
-$ extract-serac --help
+extract-serac --help
 ```
