@@ -39,6 +39,6 @@
     "lint-staged": "^15.2.2",
     "pkg": "5.8.1",
     "prettier": "3.0.3",
-    "typescript": "5.2.2"
+    "typescript": "5.3.3"
   }
 }
