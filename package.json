@@ -22,11 +22,10 @@
   "dependencies": {
     "axios": "0.28.0",
     "csv-stringify": "6.4.5",
-    "uninstall": "0.0.0",
     "yargs": "17.7.2"
   },
   "devDependencies": {
-    "@tsconfig/node18": "18.2.2",
+    "@tsconfig/node20": "20.1.2",
     "@tsconfig/strictest": "2.0.3",
     "@types/node": "20.11.19",
     "@types/yargs": "17.0.32",
