@@ -38,6 +38,6 @@
     "lint-staged": "15.2.2",
     "pkg": "5.8.1",
     "prettier": "3.2.5",
-    "typescript": "5.4.3"
+    "typescript": "5.4.5"
   }
 }
