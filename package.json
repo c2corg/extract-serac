@@ -21,7 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "0.28.1",
-    "csv-stringify": "6.5.0",
+    "csv-stringify": "6.5.1",
     "yargs": "17.7.2"
   },
   "devDependencies": {
