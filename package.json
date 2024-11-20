@@ -1,6 +1,6 @@
 {
   "name": "extract-serac",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "",
   "main": "extract-serac.js",
   "bin": {
