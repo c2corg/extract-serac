@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
+import axios, { AxiosResponse } from 'axios';
+import { Input, stringify } from 'csv-stringify';
 import { writeFile } from 'fs';
 import { normalize, resolve } from 'path';
-import axios, { AxiosResponse } from 'axios';
 import yargs from 'yargs';
-import { stringify, Input } from 'csv-stringify';
 
-import type { XReport, Geometry, Association } from './xreport';
+import type { Association, Geometry, XReport } from './xreport';
 import type { XReports } from './xreports';
 
 const baseUrl = 'https://api.camptocamp.org';
@@ -154,7 +154,7 @@ async function login(): Promise<string> {
       remember_me: true,
     });
     return response.data.token;
-  } catch (error) {
+  } catch {
     console.error('Invalid username or password, cannot authenticate');
     process.exit(1);
   }
