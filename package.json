@@ -20,7 +20,7 @@
   "author": "camptocamp.org",
   "license": "MIT",
   "dependencies": {
-    "axios": "0.28.1",
+    "axios": "0.29.0",
     "csv-stringify": "6.5.2",
     "yargs": "17.7.2"
   },
