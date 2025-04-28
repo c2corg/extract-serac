@@ -36,7 +36,7 @@
     "pkg": "5.8.1",
     "prettier": "3.5.3",
     "typescript": "5.8.3",
-    "typescript-eslint": "8.29.1"
+    "typescript-eslint": "8.31.1"
   },
   "lint-staged": {
     "*.ts": [
